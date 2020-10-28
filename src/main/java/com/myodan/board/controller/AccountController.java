@@ -35,9 +35,7 @@ public class AccountController {
                 model.addAttribute(key, validatorResult.get(key));
             }
         }
-
-        accountService.signUp();
-
+        accountService.signUp(accountDto);
         return "account/signup.html";
     }
 

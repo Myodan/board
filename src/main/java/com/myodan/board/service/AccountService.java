@@ -23,12 +23,12 @@ public class AccountService {
     }
 
     @Transactional
-    public Long signUp(AccountDto accountDto) {
+    public void signUp(AccountDto accountDto) {
         if (accountRepository.findByUsername(accountDto.getUsername()) != null) {
-            return -1L;
+            return;
         }
+
         accountDto.setPassword(Hashing.hashingPassword(accountDto.getPassword()));
-        return accountRepository.save(accountDto.toEntity()).getId();
     }
 
     @Transactional
