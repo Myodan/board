@@ -41,4 +41,8 @@ public class AccountService {
 
         return accountDto.getId();
     }
+
+    public void signOut(HttpServletRequest request) {
+        request.getSession().invalidate();
+    }
 }

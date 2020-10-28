@@ -29,6 +29,12 @@ public class AccountController {
         return "account/signin.html";
     }
 
+    @GetMapping("/signout")
+    public String signOut(HttpServletRequest request) {
+        accountService.signOut(request);
+        return "redirect:/";
+    }
+
     @PostMapping("/signup")
     public String signUpPost(AccountDto accountDto) {
         accountService.signUp(accountDto);
