@@ -8,30 +8,35 @@
 </head>
 <header th:insert="common/header.html"></header>
 <body>
-<br>
 <div class="container">
     <div class="card bg-light">
         <article class="card-body mx-auto" style="max-width: 400px;">
             <h4 class="card-title mt-3 text-center">회원가입</h4>
-            <form id="singup" method="post">
+            <form id="singup" method="post" onsubmit="return encryption()">
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                     </div>
-                    <input name="username" class="form-control" placeholder="아이디" type="text">
+                    <input name="username" class="form-control" placeholder="아이디" type="text" required
+                           pattern="^[a-Z0-9]{5, 20}$">
+                    <div class="invalid-feedback">아이디는 영문, 숫자를 조합하여 5~20자의 문자로 입력하여아합니다.</div>
                 </div> <!-- form-group// -->
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                     </div>
-                    <input name="password" class="form-control" placeholder="비밀번호" type="password">
+                    <input id="password" name="password" class="form-control" placeholder="비밀번호" type="password"
+                           required pattern="^[a-Z0-9]{8, 30}$">
+                    <div class="invalid-feedback">비밀번호는 영문, 숫자를 조합하여 8~30자의 문자로 입력하여아합니다.</div>
                 </div> <!-- form-group// -->
-<!--                <div class="form-group input-group">
+                <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                     </div>
-                    <input class="form-control" placeholder="Repeat password" type="password">
-                </div> &lt;!&ndash; form-group// &ndash;&gt;-->
+                    <input id="passwordCheck" name="passwordCheck" class="form-control" placeholder="비밀번호 재 확인"
+                           type="password" required pattern="^[a-Z0-9]{8, 30}$">
+                    <div class="invalid-feedback"></div>
+                </div> <!-- form-group// -->
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block">회원가입</button>
                 </div> <!-- form-group// -->
@@ -42,5 +47,22 @@
 
 </div>
 <!--container end.//-->
+<script>
+    (function() {
+      "use strict";
+      window.addEventListener("load", function() {
+        var form = document.getElementById("singup");
+        form.addEventListener("submit", function(event) {
+          if (form.checkValidity() == false) {
+            event.preventDefault();
+            event.stopPropagation();
+            form.classList.add("was-validated");
+          }
+
+          // 서버 연동 처리
+        }, false);
+      }, false);
+    }());
+</script>
 </body>
 </html>

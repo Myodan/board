@@ -36,13 +36,13 @@ public class AccountService {
         if (accountRepository.findByUsernameAndPassword(username, password) == null)
             return null;
 
-        session.setAttribute("signin", true);
-        session.setAttribute("username", username);
+        if (session.isNew()) {
+            session.setAttribute("signin", true);
+            session.setAttribute("username", username);
+        } else {
+            session.invalidate();
+        }
 
         return accountDto.getId();
-    }
-
-    public void signOut(HttpServletRequest request) {
-        request.getSession().invalidate();
     }
 }

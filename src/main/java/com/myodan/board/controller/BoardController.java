@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -24,12 +26,18 @@ public class BoardController {
     }
 
     @GetMapping("/post")
-    public String post() {
+    public String post(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (session.isNew()) {
+            session.invalidate();
+            return "redirect:/";
+        }
         return "board/post.html";
     }
 
     @PostMapping("/post")
-    public String write(BoardDto boardDto) {
+    public String write(BoardDto boardDto, HttpServletRequest request) {
+        boardDto.setAuthor(request.getSession().getAttribute("username").toString());
         boardService.savePost(boardDto);
         return "redirect:/";
     }

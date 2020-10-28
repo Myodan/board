@@ -31,7 +31,7 @@ public class AccountController {
 
     @GetMapping("/signout")
     public String signOut(HttpServletRequest request) {
-        accountService.signOut(request);
+        request.getSession().invalidate();
         return "redirect:/";
     }
 
