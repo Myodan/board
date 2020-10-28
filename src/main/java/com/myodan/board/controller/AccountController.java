@@ -6,6 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class AccountController {
 
@@ -27,13 +31,13 @@ public class AccountController {
 
     @PostMapping("/signup")
     public String signUpPost(AccountDto accountDto) {
-        accountService.signup(accountDto);
+        accountService.signUp(accountDto);
         return "redirect:/";
     }
 
     @PostMapping("/signin")
-    public String signinPost(AccountDto accountDto){
-
+    public String signinPost(AccountDto accountDto, HttpServletRequest request) {
+        accountService.signIn(accountDto, request);
         return "redirect:/";
     }
 }

@@ -3,9 +3,10 @@ package com.myodan.board.service;
 import com.myodan.board.util.Hashing;
 import com.myodan.board.domain.repository.AccountRepository;
 import com.myodan.board.dto.AccountDto;
-import com.myodan.board.util.UserInfo;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 @Service
@@ -18,7 +19,7 @@ public class AccountService {
     }
 
     @Transactional
-    public Long signup(AccountDto accountDto) {
+    public Long signUp(AccountDto accountDto) {
         if (accountRepository.findByUsername(accountDto.getUsername()) != null) {
             return -1L;
         }
@@ -27,12 +28,17 @@ public class AccountService {
     }
 
     @Transactional
-    public Long signin(AccountDto accountDto) {
+    public Long signIn(AccountDto accountDto, HttpServletRequest request) {
         String username = accountDto.getUsername();
         String password = Hashing.hashingPassword(accountDto.getPassword());
-        if (accountRepository.findByUsernameAndPassword(username, password) != null) {
-            System.out.println("로그인성공");
-        }
-        return 0L;
+        HttpSession session = request.getSession();
+
+        if (accountRepository.findByUsernameAndPassword(username, password) == null)
+            return null;
+
+        session.setAttribute("signin", true);
+        session.setAttribute("username", username);
+
+        return accountDto.getId();
     }
 }
