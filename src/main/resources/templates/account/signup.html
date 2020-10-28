@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>게시판 - 회원가입</title>
@@ -7,62 +8,47 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
 </head>
 <header th:insert="common/header.html"></header>
+
 <body>
-<div class="container">
-    <div class="card bg-light">
-        <article class="card-body mx-auto" style="max-width: 400px;">
-            <h4 class="card-title mt-3 text-center">회원가입</h4>
-            <form id="singup" method="post" onsubmit="return encryption()">
-                <div class="form-group input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <form id="signup" class="needs-validation" method="POST" novalidate>
+                    <h1 class="card-title">회원가입</h1>
+                    <div class="form-group">
+                        <label for="username"><strong>사용자 이름</strong></label>
+                        <input id="username" class="form-control" type="text" placeholder="사용자 이름을 입력해주세요!" required
+                            pattern="^[a-zA-Z0-9]{5,20}$">
+                        <div class="invalid-feedback">계정이름은 영문 대, 소문자와 숫자가 포함된 5~20자의 계정이름이여야 합니다.</div>
                     </div>
-                    <input name="username" class="form-control" placeholder="아이디" type="text" required
-                           pattern="^[a-Z0-9]{5, 20}$">
-                    <div class="invalid-feedback">아이디는 영문, 숫자를 조합하여 5~20자의 문자로 입력하여아합니다.</div>
-                </div> <!-- form-group// -->
-                <div class="form-group input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                    <div class="form-group">
+                        <label for="password"><strong>암호</strong></label>
+                        <input id="password" class="form-control" type="password" placeholder="암호를 입력해주세요!" required
+                            pattern="(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\W)(?=\S+$).{8,30}">
+                        <div class="invalid-feedback">비밀번호는 영문 대,소문자와 숫자, 특수기호가 적어도 1개 이상씩 포함된 8~30자의 비밀번호여야 합니다.</div>
                     </div>
-                    <input id="password" name="password" class="form-control" placeholder="비밀번호" type="password"
-                           required pattern="^[a-Z0-9]{8, 30}$">
-                    <div class="invalid-feedback">비밀번호는 영문, 숫자를 조합하여 8~30자의 문자로 입력하여아합니다.</div>
-                </div> <!-- form-group// -->
-                <div class="form-group input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-                    </div>
-                    <input id="passwordCheck" name="passwordCheck" class="form-control" placeholder="비밀번호 재 확인"
-                           type="password" required pattern="^[a-Z0-9]{8, 30}$">
-                    <div class="invalid-feedback"></div>
-                </div> <!-- form-group// -->
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block">회원가입</button>
-                </div> <!-- form-group// -->
-                <p class="text-center"><a href="/signin">로그인</a></p>
-            </form>
-        </article>
-    </div> <!-- card.// -->
-
-</div>
-<!--container end.//-->
-<script>
-    (function() {
-      "use strict";
-      window.addEventListener("load", function() {
-        var form = document.getElementById("singup");
-        form.addEventListener("submit", function(event) {
-          if (form.checkValidity() == false) {
-            event.preventDefault();
-            event.stopPropagation();
-            form.classList.add("was-validated");
-          }
-
-          // 서버 연동 처리
-        }, false);
-      }, false);
-    }());
-</script>
+                    <button type="submit" class="btn btn-primary">가입</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
 </body>
+
 </html>

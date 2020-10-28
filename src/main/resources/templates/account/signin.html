@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>게시판 - 로그인</title>
@@ -7,33 +8,47 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
 </head>
 <header th:insert="common/header.html"></header>
-<body>
-<div class="container">
-    <div class="card bg-light">
-        <article class="card-body mx-auto" style="max-width: 400px;">
-            <h4 class="card-title mt-3 text-center">로그인</h4>
-            <form id="singup" method="post">
-                <div class="form-group input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"> <i class="fa fa-user"></i> </span>
-                    </div>
-                    <input name="username" class="form-control" placeholder="아이디" type="text">
-                </div> <!-- form-group// -->
-                <div class="form-group input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-                    </div>
-                    <input name="password" class="form-control" placeholder="비밀번호" type="password">
-                </div> <!-- form-group// -->
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block">로그인</button>
-                </div> <!-- form-group// -->
-                <p class="text-center"><a href="/signup">회원가입</a></p>
-            </form>
-        </article>
-    </div> <!-- card.// -->
 
-</div>
-<!--container end.//-->
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <form id="signup" class="needs-validation" method="POST" novalidate>
+                    <h1 class="card-title">로그인</h1>
+                    <div class="form-group">
+                        <label for="username"><strong>사용자 이름</strong></label>
+                        <input id="username" class="form-control" type="text" placeholder="사용자 이름을 입력해주세요!" required
+                            pattern="^[a-zA-Z0-9]{5,20}$">
+                        <div class="invalid-feedback" th:utext="${valid_username}"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password"><strong>암호</strong></label>
+                        <input id="password" class="form-control" type="password" placeholder="암호를 입력해주세요!" required
+                            pattern="(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\W)(?=\S+$).{8,30}">
+                        <div class="invalid-feedback" th:utext="${valid_password}"></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">로그인</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
 </body>
+
 </html>
