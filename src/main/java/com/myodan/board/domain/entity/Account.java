@@ -26,17 +26,13 @@ public class Account {
     @Column(length = 100, nullable = false)
     private String password;
 
-    @Column(length = 10)
-    private String nickname;
-
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdDate;
 
     @Builder
-    public Account(String username, String password, String nickname) {
+    public Account(String username, String password) {
         this.username = username;
         this.password = password;
-        this.nickname = nickname;
     }
 }

@@ -1,45 +1,30 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>게시판 - 목록</title>
     <link rel='stylesheet' href='/webjars/bootstrap/4.5.0/css/bootstrap.min.css'>
 </head>
+
 <body>
-<header th:insert="common/header.html"></header>
-<div class="container">
-    <table class="table">
-        <thead class="thead-light">
-        <tr class="text-center">
-            <th scope="col">#</th>
-            <th scope="col">제목</th>
-            <th scope="col">작성자</th>
-            <th scope="col">작성일</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="text-center" th:each="post : ${postList}">
-            <th scope="row">
-                <span th:text="${post.id}"></span>
-            </th>
-            <td>
-                <a th:href="@{'/post/' + ${post.id}}">
-                    <span th:text="${post.title}"></span>
-                </a>
-            </td>
-            <td>
-                <span th:text="${post.author}"></span>
-            </td>
-            <td>
-                <span th:text="${#temporals.format(post.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <header th:insert="common/header.html"></header>
+    <div class="container">
+        <div th:each="post : ${postList}" class="card" style="margin-bottom: 5px;">
+            <div class="card-body">
+                <h3 class="card-title">
+                    <a th:href="@{'/post/' + ${post.id}}">
+                        <div th:text="${post.title}"></div>
+                    </a>
+                </h3>
+                <div th:utext="${post.author}" class="card-subtitle text-muted" style="display: inline-block; float: left;"></div>
+                <div th:utext="${#temporals.format(post.createdDate, 'yyyy-MM-dd HH:mm')}" class="card-subtitle text-muted" style="display:inline-block; float: right;"></div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-auto mr-auto"></div>
         <div class="col-auto">
-            <a th:if="${session.signin != null}" class="btn btn-dark" th:href="@{/post}" role="button">글쓰기</a>
+            <a th:if="${session.signin}" class="btn btn-dark" th:href="@{/post}" role="button">글쓰기</a>
         </div>
     </div>
 </div>

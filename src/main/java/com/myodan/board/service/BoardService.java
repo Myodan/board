@@ -19,8 +19,8 @@ public class BoardService {
     }
 
     @Transactional
-    public Long savePost(BoardDto boardDto) {
-        return boardRepository.save(boardDto.toEntity()).getId();
+    public void savePost(BoardDto boardDto) {
+        boardRepository.save(boardDto.toEntity());
     }
 
     @Transactional
@@ -45,14 +45,13 @@ public class BoardService {
     public BoardDto getPost(Long id) {
         Board board = boardRepository.findById(id).get();
 
-        BoardDto boardDto = BoardDto.builder()
+        return BoardDto.builder()
                 .id(board.getId())
                 .author(board.getAuthor())
                 .title(board.getTitle())
                 .content(board.getContent())
                 .createdDate(board.getCreatedDate())
                 .build();
-        return boardDto;
     }
 
     @Transactional

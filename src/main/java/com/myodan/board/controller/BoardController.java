@@ -1,6 +1,7 @@
 package com.myodan.board.controller;
 
 import com.myodan.board.dto.BoardDto;
+import com.myodan.board.service.AccountService;
 import com.myodan.board.service.BoardService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,7 +38,8 @@ public class BoardController {
 
     @PostMapping("/post")
     public String write(BoardDto boardDto, HttpServletRequest request) {
-        boardDto.setAuthor(request.getSession().getAttribute("username").toString());
+        String username = request.getSession().getAttribute("username").toString();
+        boardDto.setAuthor(username);
         boardService.savePost(boardDto);
         return "redirect:/";
     }

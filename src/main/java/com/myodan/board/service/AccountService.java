@@ -1,15 +1,12 @@
 package com.myodan.board.service;
 
-import com.myodan.board.util.Hashing;
 import com.myodan.board.domain.repository.AccountRepository;
 import com.myodan.board.dto.AccountDto;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
-import javax.websocket.Session;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +52,7 @@ public class AccountService {
             HttpSession session = request.getSession();
             if(session.isNew()){
                 session.setAttribute("signin", true);
+                session.setAttribute("username", accountDto.getUsername());
             }
         }
 
