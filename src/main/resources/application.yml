@@ -1,0 +1,14 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+      generate-ddl: true
+      show-sql: true
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/board?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: user
+    password: myodan
+  spring:
+    devtools:
+      livereload:
+        enabled: true

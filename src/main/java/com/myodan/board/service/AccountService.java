@@ -4,14 +4,14 @@ import com.myodan.board.util.Hashing;
 import com.myodan.board.domain.repository.AccountRepository;
 import com.myodan.board.dto.AccountDto;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
+import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
-import java.util.HashMap;
-import java.util.Map;
+import javax.websocket.Session;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AccountService {
@@ -23,47 +23,41 @@ public class AccountService {
     }
 
     @Transactional
-    public void signUp(AccountDto accountDto) {
+    public List<String> signUp(AccountDto accountDto) {
+        List<String> errors = new ArrayList<>();
         if (accountRepository.findByUsername(accountDto.getUsername()) != null) {
-            return;
+            errors.add("이미 존재하는 사용자 이름입니다!");
+        }
+        if (!accountDto.getPassword().equals(accountDto.getPasswordCheck())) {
+            System.out.println(accountDto.getPassword());
+            System.out.println(accountDto.getPasswordCheck());
+            errors.add("비밀번호가 일치하지 않습니다!");
         }
 
-        accountDto.setPassword(Hashing.hashingPassword(accountDto.getPassword()));
+        if (errors.isEmpty()) {
+            accountRepository.save(accountDto.toEntity());
+        }
+
+        return errors;
     }
 
     @Transactional
-    public Long signIn(AccountDto accountDto, HttpServletRequest request) {
+    public List<String> signIn(AccountDto accountDto, HttpServletRequest request) {
+        List<String> errors = new ArrayList<>();
         String username = accountDto.getUsername();
-        String password = Hashing.hashingPassword(accountDto.getPassword());
-        HttpSession session = request.getSession();
+        String password = accountDto.getPassword();
 
-        if (accountRepository.findByUsernameAndPassword(username, password) == null)
-            return null;
-
-        if(!session.isNew()){
-            session.invalidate();
+        if (accountRepository.findByUsernameAndPassword(username, password) == null) {
+            errors.add("알 수 없는 사용자입니다. 사용자 이름과 암호를 다시 확인해주세요!");
         }
 
-        if (session.isNew()) {
-            session.setAttribute("signin", true);
-            session.setAttribute("username", username);
+        if (errors.isEmpty()) {
+            HttpSession session = request.getSession();
+            if(session.isNew()){
+                session.setAttribute("signin", true);
+            }
         }
 
-        return accountDto.getId();
-    }
-
-    public Map<String, String> validateHandling(Errors errors) {
-        Map<String, String> validatorResult = new HashMap<>();
-
-        for (FieldError error : errors.getFieldErrors()) {
-            String validKeyName = String.format("valid_%s", error.getField());
-            validatorResult.put(validKeyName, error.getDefaultMessage());
-        }
-
-        return validatorResult;
-    }
-
-    public void signUp() {
-
+        return errors;
     }
 }

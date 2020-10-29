@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>게시판 - 회원가입</title>
+    <link rel='stylesheet' href='/webjars/bootstrap/4.5.0/css/bootstrap.min.css'>
+    <link rel="stylesheet" href='https://use.fontawesome.com/releases/v5.0.8/css/all.css'>
+</head>
+<header th:insert="common/header.html"></header>
+
+<body>
+    <div class="container">
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">환영합니다!</h4>
+            <p>회원가입이 완료되었습니다! 사이트이용이 가능합니다!</p>
+            <hr>
+            <p class="mb-0"><a href="/account/signin"><strong>로그인 바로가기</strong></a></p>
+        </div>
+    </div>
+</body>
+
+</html>

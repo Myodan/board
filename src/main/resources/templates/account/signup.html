@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>게시판 - 회원가입</title>
     <link rel='stylesheet' href='/webjars/bootstrap/4.5.0/css/bootstrap.min.css'>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+    <link rel="stylesheet" href='https://use.fontawesome.com/releases/v5.0.8/css/all.css'>
 </head>
 <header th:insert="common/header.html"></header>
 
@@ -13,39 +13,51 @@
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <form id="signup" class="needs-validation" method="POST" novalidate>
+                <form id="signup" method="POST">
                     <h1 class="card-title">회원가입</h1>
                     <div class="form-group">
                         <label for="username"><strong>사용자 이름</strong></label>
-                        <input id="username" class="form-control" type="text" placeholder="사용자 이름을 입력해주세요!" required
-                            pattern="^[a-zA-Z0-9]{5,20}$">
-                        <div class="invalid-feedback">계정이름은 영문 대, 소문자와 숫자가 포함된 5~20자의 계정이름이여야 합니다.</div>
+                        <input th:value="${username}" name="username" id="username" class="form-control" type="text"
+                            placeholder="사용자 이름을 입력해주세요!" required pattern="^[a-zA-Z0-9]{5,20}$">
+                        <div class="invalid-feedback" th:utext="${error_username}"></div>
+                        <small id="passwordHelpBlock" class="form-text text-muted">
+                            계정이름은 영문 대, 소문자와 숫자가 포함된 5~20자의 사용자 이름이여야 합니다.
+                        </small>
                     </div>
                     <div class="form-group">
                         <label for="password"><strong>암호</strong></label>
-                        <input id="password" class="form-control" type="password" placeholder="암호를 입력해주세요!" required
+                        <input name="password" id="password" class="form-control" type="password"
+                            placeholder="암호를 입력해주세요!" required
+                            pattern="(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\W)(?=\S+$).{8,30}" style="margin-bottom: 5px;">
+                        <input name="passwordCheck" id="password-check" class="form-control" type="password"
+                            placeholder="암호를 재 입력해주세요!" required
                             pattern="(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\W)(?=\S+$).{8,30}">
-                        <div class="invalid-feedback">비밀번호는 영문 대,소문자와 숫자, 특수기호가 적어도 1개 이상씩 포함된 8~30자의 비밀번호여야 합니다.</div>
+                        <small id="passwordHelpBlock" class="form-text text-muted">
+                            비밀번호는 영문 대, 소문자와 숫자, 특수기호가 적어도 1개 이상씩 포함된 8~30자의 비밀번호여야 합니다.
+                        </small>
                     </div>
-                    <button type="submit" class="btn btn-primary">가입</button>
+                    <div th:if="${errors}" class="alert alert-danger" role="alert">
+                        <div th:each="error : ${errors}" th:utext="${error}"></div>
+                    </div>
+                    <button type="submit" class="btn btn-dark">가입</button>
                 </form>
             </div>
         </div>
     </div>
+    <script type="text/javascript" src="/js/sha256.js"></script>
     <script>
         (function () {
             'use strict';
-            window.addEventListener('load', function () {
-                var forms = document.getElementsByClassName('needs-validation');
-                var validation = Array.prototype.filter.call(forms, function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                        form.classList.add('was-validated');
-                    }, false);
-                });
+            var form = document.getElementById('signup');
+            form.addEventListener('submit', function (event) {
+                var username = document.getElementById('username');
+                var passwrod = document.getElementById('password');
+                var passwordCheck = document.getElementById('password-check');
+                username.readOnly = true;
+                passwrod.readOnly = true;
+                passwordCheck.readOnly = true;
+                passwrod.value = sha256(passwrod.value);
+                passwordCheck.value = sha256(passwordCheck.value);
             }, false);
         })();
     </script>

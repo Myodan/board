@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -23,35 +24,44 @@ public class AccountController {
 
     @GetMapping("/account/signup")
     public String getSignUp() {
-        return "account/signup.html";
+        return "/account/signup";
     }
 
     @PostMapping("/account/signup")
-    public String postSignUp(@Valid AccountDto accountDto, Errors errors, Model model) {
-        if (errors.hasErrors()) {
-            model.addAttribute("accountDto", accountDto);
-            Map<String, String> validatorResult = accountService.validateHandling(errors);
-            for (String key : validatorResult.keySet()) {
-                model.addAttribute(key, validatorResult.get(key));
-            }
+    public String postSignUp(@Valid AccountDto accountDto, Model model) {
+        List<String> errors = accountService.signUp(accountDto);
+        if (errors.isEmpty()) {
+            return "/account/result";
+        } else {
+            model.addAttribute("errors", errors);
+            return "/account/signup";
         }
-        accountService.signUp(accountDto);
-        return "account/signup.html";
     }
 
     @GetMapping("/account/signin")
     public String getSignIn() {
-        return "account/signin.html";
+        return "/account/signin";
     }
 
-    @PostMapping("/signin")
-    public String postSignIn() {
-        return "redirect:/";
+    @PostMapping("/account/signin")
+    public String postSignIn(@Valid AccountDto accountDto, Model model, HttpServletRequest request) {
+        List<String> errors = accountService.signIn(accountDto, request);
+        if (errors.isEmpty()) {
+            return "redirect:/";
+        } else {
+            model.addAttribute("errors", errors);
+            return "/account/signin";
+        }
     }
 
     @GetMapping("/account/signout")
     public String signOut(HttpServletRequest request) {
         request.getSession().invalidate();
         return "redirect:/";
+    }
+
+    @GetMapping("/account/result")
+    public String getResult() {
+        return "/account/signup/result";
     }
 }
