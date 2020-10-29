@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class AccountDto {
 
+    private Long id;
+
     @NotNull
     @Pattern(regexp = "^[a-zA-Z0-9]{5,20}$")
     private String username;
@@ -21,6 +23,9 @@ public class AccountDto {
     @Pattern(regexp = "^[a-zA-Z0-9]{0,100}$")
     private String password;
 
+    @Pattern(regexp = "^[a-zA-Z0-9가-힣]{1,10}")
+    private String nickname;
+
     @Pattern(regexp = "^[a-zA-Z0-9]{0,100}$")
     private String passwordCheck;
 
@@ -28,6 +33,7 @@ public class AccountDto {
         return Account.builder()
                 .username(username)
                 .password(password)
+                .nickname(nickname)
                 .build();
     }
 
