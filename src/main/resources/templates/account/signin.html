@@ -6,6 +6,8 @@
     <title>게시판 - 로그인</title>
     <link rel='stylesheet' href='/webjars/bootstrap/4.5.0/css/bootstrap.min.css'>
     <link rel="stylesheet" href='https://use.fontawesome.com/releases/v5.0.8/css/all.css'>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@latest/nanumbarungothicsubset.css">
+    <link rel="stylesheet" href='/css/main.css'>
 </head>
 <header th:insert="common/header.html"></header>
 
@@ -13,11 +15,11 @@
     <div class="container">
         <div class="card">
             <div class="card-body">
+                <h1 class="card-title">로그인</h1>
                 <form id="signin" method="POST">
-                    <h1 class="card-title">로그인</h1>
                     <div class="form-group">
                         <label for="username"><strong>사용자 이름</strong></label>
-                        <input th:value="${username}" name="username" id="username" class="form-control" type="text"
+                        <input name="username" id="username" class="form-control" type="text"
                             placeholder="사용자 이름을 입력해주세요!" required pattern="^[a-zA-Z0-9]{5,20}$">
                         <div class="invalid-feedback" th:utext="${error_username}"></div>
                     </div>

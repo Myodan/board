@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>계정 - 내 정보</title>
+    <link rel='stylesheet' href='/webjars/bootstrap/4.5.0/css/bootstrap.min.css'>
+    <link rel="stylesheet" href='https://use.fontawesome.com/releases/v5.0.8/css/all.css'>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@latest/nanumbarungothicsubset.css">
+    <link rel="stylesheet" href='/css/main.css'>
+</head>
+<header th:insert="common/header.html"></header>
+
+<body>
+    <div class="container">
+        <p>
+            <a class="btn btn-dark" href="/myaccount" role="button">내 정보</a>
+            <a class="btn btn-secondary" href="/myaccount/postlist" role="button">내 작성글</a>
+        </p>
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title">내 작성글</h1>
+                <form id="myaccount" method="POST">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">제목</th>
+                                <th scope="col">작성일</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="post : ${postList}">
+                                <td>
+                                    <a th:href="@{'/post/' + ${post.id}}">
+                                        <div th:text="${post.title}"></div>
+                                    </a>
+                                </td>
+                                <td>
+                                    <div th:text="${#temporals.format(post.createdDate, 'yyyy-MM-dd HH:mm')}"></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

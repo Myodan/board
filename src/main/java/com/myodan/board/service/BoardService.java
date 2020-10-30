@@ -24,21 +24,32 @@ public class BoardService {
     }
 
     @Transactional
-    public List<BoardDto> getBoardList() {
-        List<Board> boardList = boardRepository.findAll();
+    public List<BoardDto> getBoardDtoListByBoardList(List<Board> boardList){
         List<BoardDto> boardDtoList = new ArrayList<>();
-
-        for(Board board : boardList) {
+        for (Board board : boardList) {
             BoardDto boardDto = BoardDto.builder()
                     .id(board.getId())
                     .author(board.getAuthor())
                     .title(board.getTitle())
                     .content(board.getContent())
                     .createdDate(board.getCreatedDate())
+                    .modifiedDate(board.getModifiedDate())
                     .build();
             boardDtoList.add(boardDto);
         }
         return boardDtoList;
+    }
+
+    @Transactional
+    public List<BoardDto> getBoardListByAuthor(String author) {
+        List<Board> boardList = boardRepository.findByAuthorOrderByCreatedDateDesc(author);
+        return getBoardDtoListByBoardList(boardList);
+    }
+
+    @Transactional
+    public List<BoardDto> getBoardList() {
+        List<Board> boardList = boardRepository.findAllByOrderByCreatedDateDesc();
+        return getBoardDtoListByBoardList(boardList);
     }
 
     @Transactional

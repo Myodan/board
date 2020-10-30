@@ -1,7 +1,9 @@
 package com.myodan.board.controller;
 
 import com.myodan.board.dto.AccountDto;
+import com.myodan.board.dto.BoardDto;
 import com.myodan.board.service.AccountService;
+import com.myodan.board.service.BoardService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -17,9 +20,11 @@ import java.util.Map;
 public class AccountController {
 
     private final AccountService accountService;
+    private final BoardService boardService;
 
-    public AccountController(AccountService accountService) {
+    public AccountController(AccountService accountService, BoardService boardService) {
         this.accountService = accountService;
+        this.boardService = boardService;
     }
 
     @GetMapping("/account/signup")
@@ -55,13 +60,33 @@ public class AccountController {
     }
 
     @GetMapping("/account/signout")
-    public String signOut(HttpServletRequest request) {
+    public String getSignOut(HttpServletRequest request) {
         request.getSession().invalidate();
         return "redirect:/";
     }
 
-    @GetMapping("/account/result")
-    public String getResult() {
-        return "/account/signup/result";
+    @GetMapping("/myaccount")
+    public String getMyAccount(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (session.isNew()) {
+            session.invalidate();
+            return "redirect:/account/signin";
+        } else {
+            return "/myaccount/index";
+        }
+    }
+
+    @GetMapping("/myaccount/postlist")
+    public String getMyAccountBoardList(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession();
+        if (session.isNew()) {
+            session.invalidate();
+            return "redirect:/account/signin";
+        } else {
+            String username = session.getAttribute("username").toString();
+            List<BoardDto> boardDtoList = boardService.getBoardListByAuthor(username);
+            model.addAttribute("postList", boardDtoList);
+            return "/myaccount/postlist";
+        }
     }
 }

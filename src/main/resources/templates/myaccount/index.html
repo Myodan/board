@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>계정 - 내 정보</title>
+    <link rel='stylesheet' href='/webjars/bootstrap/4.5.0/css/bootstrap.min.css'>
+    <link rel="stylesheet" href='https://use.fontawesome.com/releases/v5.0.8/css/all.css'>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@latest/nanumbarungothicsubset.css">
+    <link rel="stylesheet" href='/css/main.css'>
+</head>
+<header th:insert="common/header.html"></header>
+
+<body>
+<div class="container">
+    <p>
+        <a class="btn btn-secondary" href="/myaccount" role="button">내 정보</a>
+        <a class="btn btn-dark" href="/myaccount/postlist" role="button">내 작성글</a>
+    </p>
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title">내 정보</h1>
+            <form id="myaccount" method="POST">
+                <div class="form-group">
+                    <label for="username"><strong>사용자 이름</strong></label>
+                    <input th:value="${session.username}" class="form-control" type="text" disabled>
+                </div>
+                <button type="submit" class="btn btn-dark">내 정보 변경</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

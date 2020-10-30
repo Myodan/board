@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>게시판 - 목록</title>
     <link rel='stylesheet' href='/webjars/bootstrap/4.5.0/css/bootstrap.min.css'>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@latest/nanumbarungothicsubset.css">
+    <link rel="stylesheet" href='/css/main.css'>
 </head>
 
 <body>
@@ -17,8 +19,9 @@
                         <div th:text="${post.title}"></div>
                     </a>
                 </h3>
-                <div th:utext="${post.author}" class="card-subtitle text-muted" style="display: inline-block; float: left;"></div>
-                <div th:utext="${#temporals.format(post.createdDate, 'yyyy-MM-dd HH:mm')}" class="card-subtitle text-muted" style="display:inline-block; float: right;"></div>
+                <div th:utext="${post.author}" class="card-subtitle text-muted"
+                    style="display: inline-block; float: left;"></div>
+                <div th:text="${#temporals.format(post.createdDate, 'yyyy-MM-dd HH:mm')}" class="card-subtitle text-muted" style="display:inline-block; float: right;"></div>
         </div>
     </div>
     <div class="row">
