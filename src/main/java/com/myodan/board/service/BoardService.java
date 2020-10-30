@@ -4,6 +4,8 @@ package com.myodan.board.service;
 import com.myodan.board.domain.entity.Board;
 import com.myodan.board.domain.repository.BoardRepository;
 import com.myodan.board.dto.BoardDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,7 +26,7 @@ public class BoardService {
     }
 
     @Transactional
-    public List<BoardDto> getBoardDtoListByBoardList(List<Board> boardList){
+    public List<BoardDto> getBoardDtoListByBoardList(List<Board> boardList) {
         List<BoardDto> boardDtoList = new ArrayList<>();
         for (Board board : boardList) {
             BoardDto boardDto = BoardDto.builder()
@@ -47,12 +49,6 @@ public class BoardService {
     }
 
     @Transactional
-    public List<BoardDto> getBoardList() {
-        List<Board> boardList = boardRepository.findAllByOrderByCreatedDateDesc();
-        return getBoardDtoListByBoardList(boardList);
-    }
-
-    @Transactional
     public BoardDto getPost(Long id) {
         Board board = boardRepository.findById(id).get();
 
@@ -63,6 +59,19 @@ public class BoardService {
                 .content(board.getContent())
                 .createdDate(board.getCreatedDate())
                 .build();
+    }
+
+    public Page<BoardDto> getPostList(Pageable pageable) {
+        Page<Board> boardPage = boardRepository.findAll(pageable);
+        return boardPage.map(post -> BoardDto.builder()
+                .id(post.getId())
+                .author(post.getAuthor())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .createdDate(post.getCreatedDate())
+                .modifiedDate(post.getModifiedDate())
+                .build()
+        );
     }
 
     @Transactional

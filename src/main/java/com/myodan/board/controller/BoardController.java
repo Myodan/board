@@ -1,15 +1,17 @@
 package com.myodan.board.controller;
 
 import com.myodan.board.dto.BoardDto;
-import com.myodan.board.service.AccountService;
 import com.myodan.board.service.BoardService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
 public class BoardController {
@@ -19,11 +21,11 @@ public class BoardController {
         this.boardService = boardService;
     }
 
-    @GetMapping("/")
-    public String list(Model model) {
-        List<BoardDto> boardDtoList = boardService.getBoardList();
-        model.addAttribute("postList", boardDtoList);
-        return "board/list.html";
+    @GetMapping
+    public String boradPage(@PageableDefault(sort = "createdDate", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+        Page<BoardDto> postList = boardService.getPostList(pageable);
+        model.addAttribute("postList", postList);
+        return "board/list";
     }
 
     @GetMapping("/post")
