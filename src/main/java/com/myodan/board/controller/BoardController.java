@@ -61,7 +61,9 @@ public class BoardController {
     }
 
     @PutMapping("/post/edit/{id}")
-    public String update(BoardDto boardDto) {
+    public String update(HttpServletRequest request, BoardDto boardDto) {
+        String username = request.getSession().getAttribute("username").toString();
+        boardDto.setAuthor(username);
         boardService.savePost(boardDto);
         return "redirect:/";
     }
